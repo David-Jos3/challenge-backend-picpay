@@ -1,14 +1,59 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+enum DocumentType {
+  CPF
+  CNPJ
+}
+
+enum UserType {
+  COMMON
+  MERCHANT
+}
+
+model User {
+  id                   String        @id @default(uuid())
+  name                 String
+  document_number      String        @unique
+  document_type        DocumentType
+  email                String        @unique
+  password             String
+  user_type            UserType
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+  wallets              Wallet[]
+  transactionsSent     Transaction[] @relation("payer")
+  transactionsReceived Transaction[] @relation("payee")
+
+  @@index([document_type, email])
+  @@map("users")
+}
+
+model Wallet {
+  id      String @id @default(uuid())
+  user_id String @unique
+  balance Int    @default(0)
+  user    User   @relation(fields: [user_id], references: [id])
+
+  @@map("wallets")
+}
+
+model Transaction {
+  id        String   @id @default(uuid())
+  amount    Int
+  status    String
+  payerId   String
+  payeeId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  payer     User     @relation("payer", fields: [payerId], references: [id])
+  payee     User     @relation("payee", fields: [payeeId], references: [id])
+
+  @@map("transactions")
 }
