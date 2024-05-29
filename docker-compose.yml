@@ -6,7 +6,9 @@ services:
     ports:
       - '3306:3306'
     environment:
-      - MYSQL_USERNAME=david
-      - MYSQL_ROOT_PASSWORD=docker123
-      - MYSQL_PASSWORD=dockerpicpay
+      - MYSQL_USER=david
+      - MYSQL_ROOT_PASSWORD=docker
+      - MYSQL_PASSWORD=docker
       - MYSQL_DATABASE=picpay-db
+
+
