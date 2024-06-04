@@ -4,6 +4,15 @@ import { prisma } from "@/lib/prisma";
 
 export class PrismaTransactionsRepository implements TransactionsRepository {
 
+  async  findByPayeeId(payeeId: string){
+    const transaction = await  prisma.transaction.findFirst({
+      where: {
+        payeeId: payeeId
+      }
+    })
+    return transaction
+  }
+
  async findByPayerId(payerId: string){
     const transaction = await  prisma.transaction.findFirst({
       where: {
