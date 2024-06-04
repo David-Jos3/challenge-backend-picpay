@@ -1,4 +1,4 @@
-import { PrismaWalletRepository } from '@/http/repositories/prisma/prisma-wallet-repository';
+import { PrismaWalletRepository } from '@/repositories/prisma/prisma-wallet-repository';
 import { WalletUseCase } from '@/use-case/wallet';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod'
@@ -16,7 +16,7 @@ const {userId, balance} = createWalletSchema.parse(request.body)
   try{
     const walletRepository = new PrismaWalletRepository()
     const walletUseCase = new WalletUseCase(walletRepository)
-   const wallet = await walletUseCase.execute({
+     await walletUseCase.execute({
       userId,
       balance
     })
@@ -25,4 +25,5 @@ const {userId, balance} = createWalletSchema.parse(request.body)
       return reply.status(400).send({message: error.message})
     }
   }
+  reply.status(201).send({message: 'Wallet created'})
 }

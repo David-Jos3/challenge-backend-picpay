@@ -1,6 +1,6 @@
-import { WalletRepository } from "@/http/repositories/wallet-repositories";
 import { Wallet } from "@prisma/client";
 import { WalletCreationError } from "./errors/wallet-creation-error";
+import { WalletRepository } from "@/repositories/wallet-repository";
 
 
 export interface WalletUseCaseRequest {
