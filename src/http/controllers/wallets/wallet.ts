@@ -1,4 +1,5 @@
 import { PrismaWalletRepository } from '@/repositories/prisma/prisma-wallet-repository';
+import { WalletCreationError } from '@/use-case/errors/wallet-creation-error';
 import { WalletUseCase } from '@/use-case/wallet';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import { z } from 'zod'
@@ -24,6 +25,11 @@ const {userId, balance} = createWalletSchema.parse(request.body)
     if(error instanceof z.ZodError){
       return reply.status(400).send({message: error.message})
     }
+
+    if(error instanceof WalletCreationError) {
+      return reply.status(400).send({message: error.message})
+    }
+    return reply.status(500).send({message: 'Internal Server Error'})
   }
   reply.status(201).send({message: 'Wallet created'})
 }

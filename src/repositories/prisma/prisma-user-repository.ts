@@ -4,7 +4,13 @@ import { prisma } from "@/lib/prisma";
 
 
 export class PrismaUserRepository implements UserRepository {
+
+
  
+  async findById(id:string){
+    return await prisma.user.findUnique({where: {id}})
+  }
+
  async findByEmail(email: string){
    return await prisma.user.findUnique({where: {email}})
   }
