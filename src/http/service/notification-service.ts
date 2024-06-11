@@ -14,8 +14,7 @@ export class NotificationService {
 
     try {
       
-      const {data} = await axios.post(' https://util.devi.tools/api/v1/notify', requestData)
-      console.log(data)
+      const {data} = await axios.post('https://util.devi.tools/api/v1/notify', requestData)
       return data
 
     } catch (error) {
